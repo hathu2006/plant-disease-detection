@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# Dữ liệu & cache dataset (tải qua TFDS, không commit)
+data/
+tensorflow_datasets/
+*.zip
+*.tar.gz
+
+# Model đã train (nặng — chia sẻ qua Releases / Drive, không commit)
+*.keras
+*.h5
+*.tflite
+*.pb
+saved_model/
+
+# Output sinh ra khi chạy (biểu đồ, log). Ảnh dùng cho README sẽ được add thủ công.
+outputs/*
+!outputs/.gitkeep
+
+# Hệ điều hành / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
