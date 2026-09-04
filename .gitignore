@@ -22,6 +22,10 @@ saved_model/
 # Output sinh ra khi chạy (biểu đồ, log). Ảnh dùng cho README sẽ được add thủ công.
 outputs/*
 !outputs/.gitkeep
+# class_names.json là danh sách 38 tên lớp cố định (không đổi giữa các lần
+# chạy) — commit sẵn để predict.py/demo dùng được mà không cần tải cả
+# dataset chỉ để tạo lại file 1KB này.
+!outputs/class_names.json
 
 # Hệ điều hành / IDE
 .DS_Store
