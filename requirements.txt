@@ -1,6 +1,10 @@
 # Bước 1-4 (Colab): train + evaluate
 tensorflow>=2.15
 tensorflow-datasets>=4.9
+# ép protobuf mới để tránh lỗi "Protobuf Gencode/Runtime versions" khi import
+# tensorflow_datasets (tensorflow-metadata sinh proto bằng protobuf mới hơn
+# bản protobuf được cài kèm mặc định trên Colab)
+protobuf>=6.31.1
 matplotlib>=3.7
 numpy>=1.24
 scikit-learn>=1.3
