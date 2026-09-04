@@ -13,7 +13,7 @@ chẩn đoán nhanh từ ảnh lá (chụp bằng điện thoại) có thể gi�
 
 | Hạng mục | Lựa chọn | Lý do |
 |---|---|---|
-| Dataset | PlantVillage (qua `tensorflow_datasets`) | công khai, ~54k ảnh, 38 lớp, không cần Kaggle token |
+| Dataset | PlantVillage (tải từ Kaggle) | công khai, ~54k ảnh, 38 lớp; chuyển từ `tensorflow_datasets` sang Kaggle vì chuỗi phụ thuộc `tensorflow-metadata`/`protobuf` của TFDS xung đột với bản TensorFlow cài sẵn trên Colab |
 | Model | Transfer learning từ **MobileNetV2** (pretrained ImageNet) | nhẹ, train nhanh trên Colab free, dễ convert sang TFLite |
 | Framework | TensorFlow / Keras | có sẵn `keras.applications` + đường ra TFLite gọn |
 | Demo | Gradio, deploy Hugging Face Spaces | có link công khai, viết ít code, hợp bài toán "1 ảnh → 1 dự đoán" |
@@ -34,6 +34,21 @@ Trên Google Colab (không cần GPU cho bước này):
 
 ```bash
 pip install -q -r requirements.txt
+```
+
+Tải dataset từ Kaggle (cần 1 lần tạo API token tại kaggle.com → Account →
+Create New API Token, tải file `kaggle.json`):
+
+```python
+from google.colab import files
+files.upload()  # chọn kaggle.json
+
+!mkdir -p ~/.kaggle && cp kaggle.json ~/.kaggle/ && chmod 600 ~/.kaggle/kaggle.json
+!kaggle datasets download -d abdallahalidev/plantvillage-dataset -p data
+!unzip -q data/plantvillage-dataset.zip -d data
+```
+
+```bash
 python scripts/step1_explore.py
 ```
 
