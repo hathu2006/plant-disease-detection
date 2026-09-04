@@ -160,6 +160,15 @@ def main():
     )
 
     plot_history([hist1, hist2], OUT_DIR)
+
+    # Lưu thêm lịch sử train dạng JSON (nhẹ, dễ tải/commit hơn ảnh) — phòng
+    # khi quên tải training_curves.png trước khi Colab ngắt phiên, vẫn vẽ
+    # lại được từ file này.
+    history_path = OUT_DIR / "training_history.json"
+    with open(history_path, "w", encoding="utf-8") as f:
+        json.dump({"phase1": hist1.history, "phase2": hist2.history}, f, indent=2)
+    print(f"[saved] {history_path}")
+
     model.save(ckpt_path)
     print(f"\n[saved] model cuối cùng: {ckpt_path}")
 
