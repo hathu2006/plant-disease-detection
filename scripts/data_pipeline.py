@@ -12,6 +12,7 @@ model ở Bước 3 — để khi export model đi demo/TFLite, ai dùng lại c
 thể quên bước tiền xử lý này.
 """
 
+import csv
 from pathlib import Path
 
 import tensorflow as tf
@@ -78,12 +79,15 @@ def make_dataset(paths, labels, batch_size=BATCH_SIZE, shuffle=False, augment=Fa
 
 
 def save_split_csv(split: dict, class_names: list[str], out_dir: Path):
+    # Dùng module csv (không tự nối chuỗi bằng ",") vì vài tên lớp có dấu
+    # phẩy ngay trong tên, vd "Pepper,_bell___healthy" — nối tay sẽ đọc sai.
     out_dir.mkdir(parents=True, exist_ok=True)
     for name, (paths, labels) in split.items():
-        with open(out_dir / f"{name}.csv", "w", encoding="utf-8") as f:
-            f.write("path,label\n")
+        with open(out_dir / f"{name}.csv", "w", encoding="utf-8", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["path", "label"])
             for p, y in zip(paths, labels):
-                f.write(f"{p},{class_names[y]}\n")
+                writer.writerow([p, class_names[y]])
 
 
 def load_split_csv(out_dir: Path, class_names: list[str]):
@@ -91,10 +95,10 @@ def load_split_csv(out_dir: Path, class_names: list[str]):
     split = {}
     for name in ("train", "val", "test"):
         paths, labels = [], []
-        with open(out_dir / f"{name}.csv", "r", encoding="utf-8") as f:
-            next(f)  # header
-            for line in f:
-                path, cls = line.rstrip("\n").rsplit(",", 1)
+        with open(out_dir / f"{name}.csv", "r", encoding="utf-8", newline="") as f:
+            reader = csv.reader(f)
+            next(reader)  # header
+            for path, cls in reader:
                 paths.append(path)
                 labels.append(name_to_idx[cls])
         split[name] = (paths, labels)
