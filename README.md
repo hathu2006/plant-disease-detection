@@ -4,7 +4,8 @@ Dự án cá nhân về computer vision: fine-tune một CNN nhẹ để phân l
 thành 38 lớp (loại cây × khỏe mạnh / bệnh cụ thể), kèm demo web cho phép upload
 ảnh và nhận chẩn đoán + gợi ý xử lý.
 
-**Demo:** _(điền link Hugging Face Space sau khi deploy)_
+**Demo trực tiếp:** mở [`demo_colab.ipynb`](https://colab.research.google.com/github/hathu2006/plant-disease-detection/blob/main/demo_colab.ipynb)
+trên Google Colab → Run all → bấm link `*.gradio.live` hiện ra (không cần GPU / đăng nhập).
 
 ![Demo Gradio](outputs/demo_screenshot.png)
 
@@ -136,15 +137,16 @@ python scripts/step3b_finetune_plantdoc.py \
 ### Chạy demo
 
 ```bash
-MODEL_PATH=models/mobilenetv2_pv_plantdoc.keras python app.py
+python app.py                 # model mặc định: models/mobilenetv2_pv_plantdoc.keras
 ```
 
-### Deploy demo lên Hugging Face Spaces
+Hoặc mở [`demo_colab.ipynb`](https://colab.research.google.com/github/hathu2006/plant-disease-detection/blob/main/demo_colab.ipynb)
+trên Colab (Run all) để có link công khai tạm thời `*.gradio.live`.
 
-Xem hướng dẫn từng bước trong [SPACE_README.md](SPACE_README.md) (file này cũng
-dùng làm `README.md` cho Space — phần YAML ở đầu là bắt buộc). Tóm tắt: tạo Space
-SDK Gradio, copy `app.py` + `requirements.txt` + `outputs/class_names.json` +
-`models/mobilenetv2_pv_plantdoc.keras` (Git LFS) vào, push.
+### (Tùy chọn) Deploy cố định lên Hugging Face Spaces
+
+Xem [SPACE_README.md](SPACE_README.md). Lưu ý: HF hiện yêu cầu xác minh tài khoản
+(thêm thẻ, không tính phí với hardware CPU basic) trước khi tạo Space.
 
 ### (Tùy chọn) Convert sang TFLite cho mobile
 

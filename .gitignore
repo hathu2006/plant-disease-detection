@@ -18,6 +18,9 @@ tensorflow_datasets/
 *.tflite
 *.pb
 saved_model/
+# ngoại lệ: model B (~25MB, dưới ngưỡng GitHub) commit sẵn để demo Colab
+# chạy được ngay sau git clone, không cần Drive.
+!models/mobilenetv2_pv_plantdoc.keras
 
 # Output sinh ra khi chạy (biểu đồ, log). Ảnh dùng cho README sẽ được add thủ công.
 outputs/*
