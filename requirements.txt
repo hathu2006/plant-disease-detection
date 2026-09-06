@@ -9,4 +9,4 @@ pandas>=2.0
 seaborn>=0.13
 
 # Bước 5: demo
-gradio>=4.0
+gradio>=4.44,<5

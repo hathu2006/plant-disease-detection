@@ -26,6 +26,16 @@ outputs/*
 # chạy) — commit sẵn để predict.py/demo dùng được mà không cần tải cả
 # dataset chỉ để tạo lại file 1KB này.
 !outputs/class_names.json
+# Kết quả chính để hiển thị trong README (tải từ Colab về rồi add thủ công).
+!outputs/class_distribution.png
+!outputs/samples.png
+!outputs/augmentation_demo.png
+!outputs/training_curves.png
+!outputs/finetune_plantdoc_curves.png
+!outputs/confusion_matrix.png
+!outputs/plantdoc_confusion.png
+!outputs/classification_report.txt
+!outputs/training_history.json
 
 # Hệ điều hành / IDE
 .DS_Store
