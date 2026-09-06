@@ -36,6 +36,7 @@ outputs/*
 !outputs/plantdoc_confusion.png
 !outputs/classification_report.txt
 !outputs/training_history.json
+!outputs/demo_screenshot.png
 
 # Hệ điều hành / IDE
 .DS_Store

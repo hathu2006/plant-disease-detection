@@ -6,6 +6,8 @@ thành 38 lớp (loại cây × khỏe mạnh / bệnh cụ thể), kèm demo we
 
 **Demo:** _(điền link Hugging Face Space sau khi deploy)_
 
+![Demo Gradio](outputs/demo_screenshot.png)
+
 ---
 
 ## 1. Vấn đề
@@ -134,28 +136,21 @@ MODEL_PATH=models/mobilenetv2_pv_plantdoc.keras python app.py
 
 ### Deploy demo lên Hugging Face Spaces
 
-1. Tạo Space mới (SDK: Gradio).
-2. Thêm vào đầu `README.md` của Space phần cấu hình:
-   ```
-   ---
-   title: Plant Disease Detection
-   sdk: gradio
-   app_file: app.py
-   ---
-   ```
-3. Push `app.py`, `requirements.txt`, `outputs/class_names.json`, và file model
-   `models/mobilenetv2_pv_plantdoc.keras` (dùng Git LFS) lên Space.
+Xem hướng dẫn từng bước trong [SPACE_README.md](SPACE_README.md) (file này cũng
+dùng làm `README.md` cho Space — phần YAML ở đầu là bắt buộc). Tóm tắt: tạo Space
+SDK Gradio, copy `app.py` + `requirements.txt` + `outputs/class_names.json` +
+`models/mobilenetv2_pv_plantdoc.keras` (Git LFS) vào, push.
 
 ### (Tùy chọn) Convert sang TFLite cho mobile
 
-```python
-conv = tf.lite.TFLiteConverter.from_keras_model(
-    tf.keras.models.load_model("models/mobilenetv2_pv_plantdoc.keras"))
-conv.optimizations = [tf.lite.Optimize.DEFAULT]
-open("model.tflite", "wb").write(conv.convert())
+```bash
+python scripts/export_tflite.py --model-path models/mobilenetv2_pv_plantdoc.keras --out-dir models
 ```
-MobileNetV2 sau khi lượng tử hóa còn ~3-4 MB, chạy được real-time trên điện thoại
-tầm trung. Chưa tích hợp app native trong phạm vi dự án này.
+Xuất bản `fp32` và bản lượng tử hóa động `int8`. MobileNetV2 sau lượng tử hóa còn
+nhỏ và chạy được real-time trên điện thoại tầm trung. Chưa tích hợp app native
+trong phạm vi dự án này.
+
+_(điền số liệu kích thước sau khi chạy: Keras … MB → TFLite int8 … MB)_
 
 ## 7. Cấu trúc
 
