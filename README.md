@@ -71,14 +71,19 @@ mạnh hơn (thêm translation, biên độ lớn hơn). Mở khóa 60 layer cu�
 
 | Model | PlantVillage test (ảnh sạch) | PlantDoc test — top‑1 | PlantDoc test — top‑3 | PlantDoc macro‑F1 |
 |---|---|---|---|---|
-| **A** — chỉ PlantVillage | **0.974** | 0.306 | 0.456 | 0.29 |
-| **B** — + fine‑tune PlantDoc | 0.945 | **0.615** | **0.845** | **0.60** |
+| **A** — chỉ PlantVillage | **~0.96–0.97** | 0.306 | 0.456 | 0.29 |
+| **B** — + fine‑tune PlantDoc | ~0.95 | **0.615** | **0.845** | **0.60** |
+
+> PlantVillage không có split test chính thức nên tập test do mình tự chia. Model A/B
+> được train trước khi cố định thứ tự liệt kê file, nên số PlantVillage test dao động
+> ~1 điểm giữa các lần chia (0.974 lần chạy đầu; 0.964 ở lần dựng lại confusion
+> matrix bên dưới). Số liệu PlantDoc không phụ thuộc split này.
 
 ![Confusion matrix PlantVillage test](outputs/confusion_matrix.png)
 
-- **Model A trên test set PlantVillage: 97.4%**, macro‑F1 0.971. Gần như mọi lỗi xảy
-  ra *giữa các bệnh cùng một loại cây* (cà chua nhầm cà chua, ngô nhầm ngô), chưa bao
-  giờ nhầm giữa hai loài khác nhau. Yếu nhất: nhóm đốm lá cà chua
+- **Model A trên test set PlantVillage: ~96–97%**, macro‑F1 ~0.96. Gần như mọi lỗi
+  xảy ra *giữa các bệnh cùng một loại cây* (cà chua nhầm cà chua, ngô nhầm ngô), chưa
+  bao giờ nhầm giữa hai loài khác nhau. Yếu nhất: nhóm đốm lá cà chua
   (`Target_Spot` precision 0.76, `Early_blight` recall 0.85) vì triệu chứng thị giác
   gần giống nhau.
 - **Cùng Model A trên ảnh đồng ruộng thật (PlantDoc): rớt còn 30.6%.** Các lớp
@@ -86,7 +91,7 @@ mạnh hơn (thêm translation, biên độ lớn hơn). Mở khóa 60 layer cu�
   về vài lớp "an toàn". Thử nhanh trên 5 ảnh crawl từ Google Images: **0/5 đúng**,
   với độ tin cậy tới 99.8% cho đáp án sai.
 - **Fine-tune (Model B) kéo PlantDoc top‑1 tăng gấp đôi lên 61.5%** (top‑3: 84.5%),
-  trong khi PlantVillage chỉ tụt 3 điểm (94.5%). Các lớp "healthy" hồi phục
+  trong khi PlantVillage chỉ tụt ~2 điểm. Các lớp "healthy" hồi phục
   (Strawberry healthy 0.00 → 1.00 F1). Đánh đổi: precision nhóm đốm lá cà chua trên
   ảnh sạch giảm nhẹ.
 
@@ -146,11 +151,16 @@ SDK Gradio, copy `app.py` + `requirements.txt` + `outputs/class_names.json` +
 ```bash
 python scripts/export_tflite.py --model-path models/mobilenetv2_pv_plantdoc.keras --out-dir models
 ```
-Xuất bản `fp32` và bản lượng tử hóa động `int8`. MobileNetV2 sau lượng tử hóa còn
-nhỏ và chạy được real-time trên điện thoại tầm trung. Chưa tích hợp app native
-trong phạm vi dự án này.
+Xuất bản `fp32` và bản lượng tử hóa động `int8`:
 
-_(điền số liệu kích thước sau khi chạy: Keras … MB → TFLite int8 … MB)_
+| | Kích thước |
+|---|---|
+| Keras (`.keras`) | 24.6 MB |
+| TFLite fp32 | 9.1 MB |
+| TFLite dynamic‑range int8 | **2.6 MB** |
+
+Bản int8 nhỏ hơn ~10 lần model gốc, chạy được real-time trên điện thoại tầm trung.
+Chưa tích hợp app native trong phạm vi dự án này.
 
 ## 7. Cấu trúc
 

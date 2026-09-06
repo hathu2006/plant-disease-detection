@@ -27,7 +27,9 @@ def list_files_labels(color_dir: Path, class_names: list[str]):
     paths, labels = [], []
     for cls in class_names:
         cls_dir = color_dir / cls
-        for f in cls_dir.iterdir():
+        # sorted() để thứ tự file ổn định giữa các phiên -> stratified_split
+        # (seed cố định) cho ra đúng 1 tập train/val/test mỗi lần.
+        for f in sorted(cls_dir.iterdir()):
             if f.suffix in IMG_EXTS:
                 paths.append(str(f))
                 labels.append(name_to_idx[cls])
