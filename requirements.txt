@@ -8,5 +8,5 @@ scikit-learn>=1.3
 pandas>=2.0
 seaborn>=0.13
 
-# Bước 5: demo
-gradio>=4.44,<5
+# Bước 5: demo (gradio 5 để tương thích huggingface_hub mới trên Colab)
+gradio>=5.0

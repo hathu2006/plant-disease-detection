@@ -12,6 +12,7 @@ tư vấn bảo vệ thực vật. Model train trên PlantVillage (ảnh 1 lá n
 độ chính xác giảm mạnh với ảnh chụp ngoài đồng (~62% trên PlantDoc).
 """
 
+import inspect
 import json
 import os
 from pathlib import Path
@@ -104,6 +105,14 @@ def predict(img):
 _examples_dir = Path("examples")
 _examples = sorted(str(p) for p in _examples_dir.glob("*")) if _examples_dir.is_dir() else None
 
+# gradio 4 dùng allow_flagging="never", gradio 5 đổi thành flagging_mode="never"
+_flag_kw = {}
+_params = inspect.signature(gr.Interface.__init__).parameters
+if "flagging_mode" in _params:
+    _flag_kw["flagging_mode"] = "never"
+elif "allow_flagging" in _params:
+    _flag_kw["allow_flagging"] = "never"
+
 demo = gr.Interface(
     fn=predict,
     inputs=gr.Image(type="pil", label="Ảnh lá cây"),
@@ -120,7 +129,7 @@ demo = gr.Interface(
         "Kết quả tốt nhất với ảnh 1 lá, nền đơn giản, đủ sáng."
     ),
     examples=_examples,
-    allow_flagging="never",
+    **_flag_kw,
 )
 
 if __name__ == "__main__":
